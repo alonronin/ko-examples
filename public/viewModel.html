@@ -1,0 +1,115 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+
+    <link rel="stylesheet" href="css/normalize.css">
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script type="text/javascript" src="js/knockout-2.1.0.js"></script>
+
+    <style type="text/css">
+        body {
+            background: #336699;
+        }
+
+        .container {
+            margin: 20px auto;
+            width: 980px;
+            min-height: 500px;
+            background: white;
+            border-top-right-radius: 10px;
+            border-top-left-radius: 10px;
+            border-bottom-right-radius: 10px;
+            border-bottom-left-radius: 10px;
+            padding: 20px;
+        }
+
+        h1 {
+            font-size: 22px;
+            font-weight: bold;
+            margin: 0;
+            padding: 10px 0;
+        }
+
+        h2 {
+            font-size: 18px;
+            font-weight: bold;
+        }
+    </style>
+
+</head>
+<body>
+
+    <div class="container">
+        <h1>The View Model</h1>
+
+        <h2>Details</h2>
+
+        <p>
+            <label for="first.name">First name: </label><input id="first.name" data-bind="value: first_name"> <br>
+        </p>
+
+        <p>
+            <label for="last.name">Last name: </label><input id="last.name" data-bind="value: last_name">
+        </p>
+
+        <div>Full name: <span data-bind="text: full_name"></span></div>
+
+
+        <h2><span data-bind="text: full_name"></span>'s Friends (<span data-bind="text: friends().length"></span>)</h2>
+
+        <ul data-bind="foreach: friends">
+            <li>
+                <input data-bind="value: name"></span>
+                <button data-bind="click: remove">Remove</button>
+                <label><input type="checkbox" data-bind="checked: is_on_twitter"> is on Twitter</label>
+                <input data-bind="value: twitter, visible: is_on_twitter">
+                <!--span data-bind="text: new Date()"></span-->
+            </li>
+        </ul>
+
+        <button data-bind="click: add, enable: friends().length < 5">Add Friend</button>
+        <button data-bind="click: save">Save</button>
+        <button data-bind="click: load">Load friends</button>
+    </div>
+
+
+    <script type="text/javascript">
+        var Friend = function(name) {
+            return {
+                name: ko.observable(name),
+                is_on_twitter: ko.observable(false),
+                twitter: ko.observable(),
+                remove: function(){ ViewModel.friends.remove(this) }
+            };
+        };
+
+        var ViewModel = {};
+
+        ViewModel.first_name = ko.observable('Alon');
+        ViewModel.last_name = ko.observable('Valadji');
+        ViewModel.friends = ko.observableArray([new Friend('Leny'), new Friend('Roman')]);
+
+        ViewModel.full_name = ko.computed(function(){
+            return this.first_name() + ' ' + this.last_name();
+        }, ViewModel);
+
+        ViewModel.add = function(){
+            this.friends.push(new Friend('New Freind'));
+        };
+
+        ViewModel.save = function(){
+            console.log(ko.toJSON(ViewModel));
+        };
+
+        ViewModel.load = function(){
+
+            var friends = [new Friend('Leny'), new Friend('Moti'), new Friend('Tomer')];
+
+        };
+
+        ko.applyBindings(ViewModel);
+    </script>
+</body>
+</html>
