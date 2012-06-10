@@ -1,0 +1,39 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+
+    <link rel="stylesheet" href="css/normalize.css">
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script type="text/javascript" src="js/knockout-2.1.0.debug.js"></script>
+
+    <style type="text/css">
+        .circle {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            background: blue;
+        }
+    </style>
+
+</head>
+<body>
+
+    <div class="circle" data-bind="style: {top: top() + 'px', left: left() + 'px'}"></div>
+
+    <script type="text/javascript">
+        $(window).on('mousemove', function(e){
+            Circle.top(e.clientY);
+            Circle.left(e.clientX);
+        });
+
+        var Circle = {
+            top: ko.observable(0),
+            left: ko.observable(0)
+        }
+
+        ko.applyBindings(Circle);
+    </script>
+</body>
+</html>
